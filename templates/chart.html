@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chart {{ symbol }}</title>
+</head>
+<body>
+    <h1>Harga {{ symbol|capitalize }} Selama 7 Hari Terakhir</h1>
+    <ul>
+    {% for l, v in zip(labels, values) %}
+        <li>{{ l }}: ${{ v }}</li>
+    {% endfor %}
+    </ul>
+    <a href="/">Kembali ke Beranda</a>
+</body>
+</html>

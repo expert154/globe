@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Globe - Berita Ekonomi</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body { background-color: #121212; color: white; }
+    .card { background-color: #1e1e1e; border: none; }
+    a { color: #00bcd4; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="container py-4">
+    <h1 class="mb-4">Globe - Berita Ekonomi Terkini</h1>
+
+    <form method="get" class="row g-3 mb-4">
+      <div class="col-md-4">
+        <input type="text" name="search" class="form-control" placeholder="Cari berita..." value="{{ request.args.get('search', '') }}">
+      </div>
+      <div class="col-md-3">
+        <select name="source" class="form-select">
+          <option value="">Semua Sumber</option>
+          <option value="newsapi" {% if source == 'newsapi' %}selected{% endif %}>NewsAPI</option>
+          <option value="gnews" {% if source == 'gnews' %}selected{% endif %}>GNews</option>
+          <option value="marketaux" {% if source == 'marketaux' %}selected{% endif %}>Marketaux</option>
+          <option value="bloomberg" {% if source == 'bloomberg' %}selected{% endif %}>Bloomberg Asia</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <select name="category" class="form-select">
+          <option value="">Semua Kategori</option>
+          <option value="business" {% if category == 'business' %}selected{% endif %}>Business</option>
+          <option value="economy" {% if category == 'economy' %}selected{% endif %}>Economy</option>
+          <option value="crypto" {% if category == 'crypto' %}selected{% endif %}>Crypto</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <button type="submit" class="btn btn-primary w-100">Filter</button>
+      </div>
+    </form>
+
+    {% if news %}
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for item in news %}
+          <div class="col">
+            <div class="card h-100">
+              {% if item.image %}
+              <img src="{{ item.image }}" class="card-img-top" alt="Gambar berita">
+              {% endif %}
+              <div class="card-body">
+                <h5 class="card-title">{{ item.title }}</h5>
+                <p class="card-text">{{ item.description }}</p>
+                <a href="{{ item.url }}" target="_blank">Baca selengkapnya</a>
+              </div>
+              <div class="card-footer">
+                <small class="text-muted">{{ item.source }} | {{ item.published }}</small>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p>Tidak ada berita ditemukan.</p>
+    {% endif %}
+  </div>
+</body>
+</html>
